@@ -1,0 +1,40 @@
+{
+	"name": "elisdn/yii2-composite-form",
+	"description": "Nested forms base class for Yii2 Framework.",
+	"type": "yii2-extension",
+	"keywords": ["yii2", "yii 2"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Dmitry Eliseev",
+			"email": "mail@elisdn.ru",
+			"homepage": "http://www.elisdn.ru"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/ElisDN/yii2-composite-form/issues?state=open",
+		"source": "https://github.com/ElisDN/yii2-composite-form"
+	},
+	"require": {
+		"yiisoft/yii2": "~2.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "4.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"elisdn\\compositeForm\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"elisdn\\compositeForm\\tests\\": "tests/"
+		}
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	]
+}
