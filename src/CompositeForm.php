@@ -99,7 +99,7 @@ abstract class CompositeForm extends Model
         $result = parent::getErrors($attribute);
         foreach ($this->forms as $name => $form) {
             if (is_array($form)) {
-                /** @var array $form */
+                /** @var Model[] $form */
                 foreach ($form as $i => $item) {
                     foreach ($item->getErrors() as $attr => $errors) {
                         /** @var array $errors */
