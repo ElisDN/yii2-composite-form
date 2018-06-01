@@ -249,4 +249,34 @@ class ValidateTest extends TestCase
             'meta.title' => 'Title cannot be blank.',
         ], $form->getFirstErrors());
     }
+
+    public function testNotValidThenValidInternal()
+    {
+        $data = [
+            'code' => 'P100',
+            'name' => 'Product Name',
+            'meta' => [
+                'title' => null,
+                'description' => 'Meta Description',
+            ],
+        ];
+
+        $form = new ProductForm(0);
+
+        $form->load($data, '');
+
+        $this->assertFalse($form->validate());
+        $this->assertTrue($form->hasErrors());
+
+        $this->assertEquals([
+            'meta.title' => ['Title cannot be blank.'],
+        ], $form->getErrors());
+
+        $form->meta->title = 'not blank title';
+
+        $this->assertTrue($form->validate());
+        $this->assertFalse($form->hasErrors());
+        $this->assertEmpty($form->getErrors());
+        $this->assertFalse($form->hasErrors('meta.title'));
+    }
 }
