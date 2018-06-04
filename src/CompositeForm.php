@@ -39,12 +39,7 @@ abstract class CompositeForm extends Model
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        if ($attributeNames !== null) {
-            $parentNames = array_filter($attributeNames, 'is_string');
-            $success = $parentNames ? parent::validate($parentNames, $clearErrors) : true;
-        } else {
-            $success = parent::validate(null, $clearErrors);
-        }
+        $success = true;
         foreach ($this->_forms as $name => $form) {
             if ($attributeNames === null || array_key_exists($name, $attributeNames) || in_array($name, $attributeNames, true)) {
                 $innerNames = ArrayHelper::getValue($attributeNames, $name);
@@ -55,6 +50,14 @@ abstract class CompositeForm extends Model
                 }
             }
         }
+
+        if ($attributeNames !== null) {
+            $parentNames = array_filter($attributeNames, 'is_string');
+            $success = ($parentNames ? parent::validate($parentNames, $clearErrors) : true) && $success;
+        } else {
+            $success = parent::validate(null, $clearErrors) && $success;
+        }
+
         return $success;
     }
 
