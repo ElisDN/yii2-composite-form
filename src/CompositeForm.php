@@ -174,4 +174,24 @@ abstract class CompositeForm extends Model
     {
         return isset($this->_forms[$name]) || parent::__isset($name);
     }
+    
+    public function __clone()
+	{
+		$clonedForms = [];
+		foreach ($this->_forms as $key => $form)
+		{
+			if (is_array($form))
+			{
+				foreach ($form as $formKey => $deepForm)
+				{
+					$clonedForms[$key][$formKey] = clone $deepForm;
+				}
+			}
+			else
+			{
+				$clonedForms[$key] = clone $form;
+			}
+		}
+		$this->_forms = $clonedForms;
+	}
 }
