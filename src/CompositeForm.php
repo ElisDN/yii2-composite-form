@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the elisdn/yii2-composite-form library
  *
@@ -150,6 +151,25 @@ abstract class CompositeForm extends Model
                 }
             }
         }
+        return $result;
+    }
+
+    public function toArray(array $fields = array(), array $expand = array(), $recursive = true): array
+    {
+        $result = parent::toArray($fields, $expand, $recursive);
+
+        foreach ($this->_forms as $name => $form) {
+            /** @var Model $form */
+            if (is_array($form)) {
+                foreach ($form as $i => $item) {
+                    /** @var Model $item */
+                    $result[$name][$i] = $item->toArray();
+                }
+            } else {
+                $result[$name] = $form->toArray();
+            }
+        }
+
         return $result;
     }
 
