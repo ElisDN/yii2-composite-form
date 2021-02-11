@@ -29,6 +29,7 @@ abstract class CompositeForm extends Model
         $success = parent::load($data, $formName);
         foreach ($this->_forms as $name => $form) {
             if (is_array($form)) {
+                $form = $this->equalsModelToForm($form, $data);
                 $success = Model::loadMultiple($form, $data, $formName === null ? null : $name) || $success;
             } else {
                 $success = $form->load($data, $formName !== '' ? null : $name) || $success;
@@ -173,5 +174,23 @@ abstract class CompositeForm extends Model
     public function __isset($name)
     {
         return isset($this->_forms[$name]) || parent::__isset($name);
+    }
+    
+    
+    private function equalsModelToForm($form, $data)
+    {
+        $model     = reset($form);
+        $countData = !empty($data[$model->formName()]) ? count($data[$model->formName()]) : 1;
+        $countForm = count($form);
+        if ($countForm < $countData) {
+            for ($i = 0; $i < ($countData - $countForm); $i++) {
+                $form [] = new $model;
+            }
+        } elseif ($countForm > $countData) {
+            for ($i = 0; $i < ($countForm - $countData); $i++) {
+                unset($form[$countForm - 1 - $i]);
+            }
+        }
+        return $form;
     }
 }
